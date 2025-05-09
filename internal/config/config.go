@@ -5,24 +5,33 @@ import (
 	"strconv"
 )
 
+// Redis holds Redis-specific configuration
+type Redis struct {
+	Host     string
+	Port     int
+	DB       int
+	Password string
+}
+
 // Config holds all the configuration for the application
 type Config struct {
-	ServerPort  int
-	RedisHost   string
-	RedisPort   int
-	RedisDB     int
-	RedisPasswd string
+	ServerPort int
+	Redis      *Redis
 }
 
 // NewConfig creates a new Config with values from environment variables
 // or defaults if environment variables are not set
 func NewConfig() *Config {
+	redis := &Redis{
+		Host:     getEnv("REDIS_HOST", "localhost"),
+		Port:     getEnvAsInt("REDIS_PORT", 6379),
+		DB:       getEnvAsInt("REDIS_DB", 0),
+		Password: getEnv("REDIS_PASSWORD", ""),
+	}
+
 	return &Config{
-		ServerPort:  getEnvAsInt("SERVER_PORT", 8080),
-		RedisHost:   getEnv("REDIS_HOST", "localhost"),
-		RedisPort:   getEnvAsInt("REDIS_PORT", 6379),
-		RedisDB:     getEnvAsInt("REDIS_DB", 0),
-		RedisPasswd: getEnv("REDIS_PASSWORD", ""),
+		ServerPort: getEnvAsInt("SERVER_PORT", 8080),
+		Redis:      redis,
 	}
 }
 

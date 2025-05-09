@@ -19,10 +19,10 @@ func main() {
 
 	// Initialize Redis service
 	redisService, err := redis.NewService(
-		cfg.RedisHost,
-		cfg.RedisPort,
-		cfg.RedisDB,
-		cfg.RedisPasswd,
+		cfg.Redis.Host,
+		cfg.Redis.Port,
+		cfg.Redis.DB,
+		cfg.Redis.Password,
 	)
 	if err != nil {
 		log.Fatalf("Failed to initialize Redis service: %v", err)
